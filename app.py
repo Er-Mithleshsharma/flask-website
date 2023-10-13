@@ -1,22 +1,42 @@
-# Importing flask module in the project is mandatory
-# An object of Flask class is our WSGI application.
-from flask import Flask
+from flask import Flask, render_template, jsonify
 
-# Flask constructor takes the name of 
-# current module (__name__) as argument.
 app = Flask(__name__)
 
-# The route() function of the Flask class is a decorator, 
-# which tells the application which URL should call 
-# the associated function.
-@app.route('/')
-# ‘/’ URL is bound with hello_world() function.
-def hello_world():
-  return 'Hello World!'
+JOBS = [
+  {
+    'id': 1, 
+    'title': 'Data Analyst',
+    'location': 'Bengaluru, India',
+    'salary': 'Rs. 10,00,000'
+  },
+  {
+    'id': 2,
+    'title': 'Data Scientist',
+    'location': 'Delhi, India',
+    'salary': 'Rs. 15,00,000'
+  },
+  {
+    'id': 3,
+    'title': 'Frontend Engineer',
+    'location': 'Remote'
+  },
+  {
+    'id': 4,
+    'title': 'Backend Engineer',
+    'location': 'San Francisco, USA',
+    'salary': '$150,000'
+  }
+]
 
-# main driver function
+@app.route("/")
+def hello_jovian():
+    return render_template('home.html', 
+                           jobs=JOBS, 
+                           company_name='Jovian')
+
+@app.route("/api/jobs")
+def list_jobs():
+  return jsonify(JOBS)
+
 if __name__ == '__main__':
-
-  # run() method of Flask class runs the application 
-  # on the local development server.
-  app.run(host = '0.0.0.0', debug = True)
+  app.run(host='0.0.0.0', debug=True)
